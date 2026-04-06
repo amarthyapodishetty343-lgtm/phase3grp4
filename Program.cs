@@ -5,7 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // EF Core with SQLite
 builder.Services.AddDbContext<FlightContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("Group4FlightContext") ?? throw new InvalidOperationException("Connection string 'Group4FlightContext' not found.")));
+{
+    var connectionString = builder.Configuration.GetConnectionString("Group4FlightContext")
+        ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+    options.UseSqlite(connectionString ?? throw new InvalidOperationException(
+        "Connection string 'Group4FlightContext' or 'DefaultConnection' not found."));
+});
 
 // Session
 builder.Services.AddDistributedMemoryCache();
