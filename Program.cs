@@ -50,6 +50,6 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<FlightContext>();
-    db.Database.Migrate();
+    db.Database.EnsureCreated();
 }
 app.Run();
